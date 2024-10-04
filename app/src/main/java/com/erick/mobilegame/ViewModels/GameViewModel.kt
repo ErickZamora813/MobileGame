@@ -33,7 +33,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     private val _wordToGuess = MutableLiveData<String>()
     val wordToGuess: LiveData<String> = _wordToGuess
 
-    // LiveData para manejar si el jugador adivinó la palabra correcta
+
     private val _isWordGuessed = MutableLiveData<Boolean>(false)
     val isWordGuessed: LiveData<Boolean> = _isWordGuessed
 
@@ -58,9 +58,9 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getLetterColor(letter: Char, index: Int, wordToGuess: String): Color {
         return when {
-            wordToGuess[index] == letter -> Color.Green // Letra correcta en la posición correcta
-            wordToGuess.contains(letter) -> Color.Yellow // Letra en la palabra pero en la posición incorrecta
-            else -> Color.Gray // Letra no está en la palabra
+            wordToGuess[index] == letter -> Color.Green
+            wordToGuess.contains(letter) -> Color.Yellow
+            else -> Color.Gray
         }
     }
 
@@ -79,12 +79,12 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
             _isGuessSubmitted.value = true
             updateKeyboardState(guess)
 
-            // Verificar si la palabra ingresada es igual a la palabra a adivinar
+
             if (guess == _wordToGuess.value) {
                 _isWordGuessed.value = true
-                println("¡Palabra correcta! Dialogo se mostrará.") // Agrega logs para verificar
+                println("¡Palabra correcta! Dialogo se mostrará.")
             } else {
-                println("Palabra incorrecta: $guess != ${_wordToGuess.value}") // Agregar log para depuración
+                println("Palabra incorrecta: $guess != ${_wordToGuess.value}")
             }
         }
     }
@@ -107,7 +107,6 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
 
 
     fun resetGame() {
-        // Reiniciar el estado del juego
         _guesses.value = emptyList()
         _currentGuess.value = ""
         _isGuessSubmitted.value = false
@@ -115,7 +114,7 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
             ('A'..'Z').forEach { put(it, Color.LightGray) }
         }
         _isWordGuessed.value = false
-        getRandomWordFromDatabase() // Nueva palabra
+        getRandomWordFromDatabase()
     }
 }
 

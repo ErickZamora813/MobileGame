@@ -25,17 +25,17 @@ fun GameScreen(viewModel: GameViewModel) {
     val isGuessSubmitted by viewModel.isGuessSubmitted.observeAsState(false)
     val keyboardState by viewModel.keyboardState.observeAsState(emptyMap())
     val wordToGuess by viewModel.wordToGuess.observeAsState("")
-    val isWordGuessed by viewModel.isWordGuessed.observeAsState(false) // Observa si la palabra fue adivinada
+    val isWordGuessed by viewModel.isWordGuessed.observeAsState(false)
 
-    // Mostrar diálogo si todos los recuadros son verdes
+
     if (isWordGuessed) {
         AlertDialog(
-            onDismissRequest = { /* Nada */ },
+            onDismissRequest = {  },
             title = { Text(text = "¡Felicidades!") },
             text = { Text(text = "Has adivinado la palabra correcta.") },
             confirmButton = {
                 Button(onClick = {
-                    viewModel.resetGame() // Reiniciar el juego
+                    viewModel.resetGame()
                 }) {
                     Text("Reiniciar Juego")
                 }
@@ -49,7 +49,6 @@ fun GameScreen(viewModel: GameViewModel) {
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Contenido del tablero
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally

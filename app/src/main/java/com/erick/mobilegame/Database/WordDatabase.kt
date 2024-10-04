@@ -53,14 +53,12 @@ abstract class WordDatabase : RoomDatabase() {
                 "aguas"
             )
 
-            // Filtrar y asegurarse de que solo palabras de 5 letras sean insertadas
             val validWords = words.filter { it.length == 5 }
             validWords.forEach { word ->
                 println("Insertando palabra válida: $word")
                 wordDao.insertAll(WordEntity(word = word))
             }
 
-            // Agregar log adicional para verificar el total de palabras insertadas
             println("Total de palabras insertadas: ${validWords.size}")
         }
     }

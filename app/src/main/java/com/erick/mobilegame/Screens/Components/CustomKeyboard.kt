@@ -47,13 +47,13 @@ fun Keyboard(
                         letter = letter,
                         onKeyPressed = { onKeyPressed(letter) },
                         backgroundColor = keyboardState[letter]
-                            ?: androidx.compose.ui.graphics.Color.White // Fondo blanco por defecto
+                            ?: androidx.compose.ui.graphics.Color.White
                     )
                 }
             }
         }
 
-        // Fila de acciones (retroceso y Enter)
+
         Row(
             horizontalArrangement = Arrangement.Center,
             modifier = androidx.compose.ui.Modifier.padding(4.dp)
@@ -63,7 +63,7 @@ fun Keyboard(
                 onKeyPressed = { onDelete() },
                 backgroundColor = androidx.compose.ui.graphics.Color.LightGray
             )
-            Spacer(modifier = androidx.compose.ui.Modifier.width(16.dp)) // Espacio entre los botones
+            Spacer(modifier = androidx.compose.ui.Modifier.width(16.dp))
             KeyboardKey(
                 letter = '⏎',
                 onKeyPressed = { onEnter() },
@@ -77,17 +77,17 @@ fun Keyboard(
 fun KeyboardKey(letter: Char, onKeyPressed: () -> Unit, backgroundColor: androidx.compose.ui.graphics.Color) {
     Box(
         modifier = androidx.compose.ui.Modifier
-            .size(38.dp) // Tamaño más grande
+            .size(38.dp)
             .padding(4.dp)
-            .background(backgroundColor) // Colorear las teclas
-            .border(2.dp, androidx.compose.ui.graphics.Color.Black) // Borde negro
+            .background(backgroundColor)
+            .border(2.dp, androidx.compose.ui.graphics.Color.Black)
             .clickable { onKeyPressed() },
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = letter.toString(),
-            style = MaterialTheme.typography.bodyLarge, // Tamaño de texto más grande
-            color = androidx.compose.ui.graphics.Color.Black // Color del texto en las teclas
+            style = MaterialTheme.typography.bodyLarge,
+            color = androidx.compose.ui.graphics.Color.Black
         )
     }
 }

@@ -16,11 +16,11 @@ fun WordRow(guess: String, wordToGuess: String, showColors: Boolean, viewModel: 
         modifier = Modifier.padding(8.dp)
     ) {
         repeat(5) { index ->
-            val letter = guess.getOrNull(index) ?: ' ' // Mostrar espacios vacíos cuando no hay letras
+            val letter = guess.getOrNull(index) ?: ' '
             val color = if (showColors && letter != ' ') {
-                viewModel.getLetterColor(letter, index, wordToGuess) // Llamamos a la función del ViewModel
+                viewModel.getLetterColor(letter, index, wordToGuess)
             } else {
-                Color.White // Cuadros en blanco hasta que se envíe la palabra
+                Color.White
             }
 
             LetterBox(letter = letter, backgroundColor = color)

@@ -33,9 +33,14 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     private val _wordToGuess = MutableLiveData<String>()
     val wordToGuess: LiveData<String> = _wordToGuess
 
-
     private val _isWordGuessed = MutableLiveData<Boolean>(false)
     val isWordGuessed: LiveData<Boolean> = _isWordGuessed
+
+    private val _isGameOver = MutableLiveData<Boolean>(false)
+    val isGameOver: LiveData<Boolean> = _isGameOver
+
+    private var attempts = 0
+    private val maxAttempts = 6
 
     init {
         getRandomWordFromDatabase()
@@ -44,7 +49,10 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
     private fun getRandomWordFromDatabase() {
         viewModelScope.launch {
             val randomWord = wordDao.getRandomWord()
-            _wordToGuess.value = randomWord?.word?.uppercase()
+            randomWord?.let {
+                _wordToGuess.value = it.word.uppercase()
+                println("Palabra seleccionada: ${it.word.uppercase()}")
+            }
         }
     }
 
@@ -79,12 +87,13 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
             _isGuessSubmitted.value = true
             updateKeyboardState(guess)
 
-
             if (guess == _wordToGuess.value) {
                 _isWordGuessed.value = true
-                println("¡Palabra correcta! Dialogo se mostrará.")
             } else {
-                println("Palabra incorrecta: $guess != ${_wordToGuess.value}")
+                attempts++
+                if (attempts >= maxAttempts) {
+                    _isGameOver.value = true
+                }
             }
         }
     }
@@ -105,8 +114,8 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
         _keyboardState.value = newKeyboardState
     }
 
-
     fun resetGame() {
+
         _guesses.value = emptyList()
         _currentGuess.value = ""
         _isGuessSubmitted.value = false
@@ -114,8 +123,11 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
             ('A'..'Z').forEach { put(it, Color.LightGray) }
         }
         _isWordGuessed.value = false
+        _isGameOver.value = false
+        attempts = 0
         getRandomWordFromDatabase()
     }
 }
+
 
 

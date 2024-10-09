@@ -26,6 +26,10 @@ fun GameScreen(viewModel: GameViewModel) {
     val keyboardState by viewModel.keyboardState.observeAsState(emptyMap())
     val wordToGuess by viewModel.wordToGuess.observeAsState("")
     val isWordGuessed by viewModel.isWordGuessed.observeAsState(false)
+    val isGameOver by viewModel.isGameOver.observeAsState(false)
+
+    val maxGuesses = 6
+    val wordLength = 5
 
 
     if (isWordGuessed) {
@@ -36,6 +40,21 @@ fun GameScreen(viewModel: GameViewModel) {
             confirmButton = {
                 Button(onClick = {
                     viewModel.resetGame()
+                }) {
+                    Text("Volver a jugar")
+                }
+            }
+        )
+    }
+
+    if (isGameOver) {
+        AlertDialog(
+            onDismissRequest = { /* Nada */ },
+            title = { Text(text = "¡Fin del juego!") },
+            text = { Text(text = "Lo siento, no has adivinado la palabra. El juego ha terminado.") },
+            confirmButton = {
+                Button(onClick = {
+                    viewModel.resetGame() // Reiniciar el juego
                 }) {
                     Text("Reiniciar Juego")
                 }
@@ -49,24 +68,42 @@ fun GameScreen(viewModel: GameViewModel) {
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        // Mostrar todas las filas desde el principio
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            guesses.forEach { guess ->
-                WordRow(
-                    guess = guess,
-                    wordToGuess = wordToGuess,
-                    showColors = true,
-                    viewModel = viewModel
-                )
+            for (index in 0 until maxGuesses) {
+                when {
+                    index < guesses.size -> {
+                        // Mostrar las palabras ya adivinadas
+                        WordRow(
+                            guess = guesses[index],
+                            wordToGuess = wordToGuess,
+                            showColors = true,
+                            viewModel = viewModel
+                        )
+                    }
+                    index == guesses.size -> {
+                        // Mostrar la palabra actual que se está escribiendo
+                        WordRow(
+                            guess = currentGuess.padEnd(wordLength), // Rellenar la fila actual con espacios si es necesario
+                            wordToGuess = wordToGuess,
+                            showColors = isGuessSubmitted,
+                            viewModel = viewModel
+                        )
+                    }
+                    else -> {
+                        // Mostrar filas vacías para los intentos futuros
+                        WordRow(
+                            guess = "".padEnd(wordLength), // Rellenar con espacios vacíos
+                            wordToGuess = wordToGuess,
+                            showColors = false, // No mostrar colores
+                            viewModel = viewModel
+                        )
+                    }
+                }
             }
-            WordRow(
-                guess = currentGuess.padEnd(5),
-                wordToGuess = wordToGuess,
-                showColors = isGuessSubmitted,
-                viewModel = viewModel
-            )
         }
 
         Spacer(modifier = Modifier.height(16.dp))

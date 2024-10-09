@@ -48,7 +48,6 @@ abstract class WordDatabase : RoomDatabase() {
                 "alado",
                 "albas",
                 "altar",
-                "Anton",
                 "atizo",
                 "avala",
                 "avion",

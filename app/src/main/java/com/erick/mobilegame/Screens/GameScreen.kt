@@ -34,7 +34,7 @@ fun GameScreen(viewModel: GameViewModel) {
 
     if (isWordGuessed) {
         AlertDialog(
-            onDismissRequest = {  },
+            onDismissRequest = { },
             title = { Text(text = "¡Felicidades!") },
             text = { Text(text = "Has adivinado la palabra correcta.") },
             confirmButton = {
@@ -49,12 +49,12 @@ fun GameScreen(viewModel: GameViewModel) {
 
     if (isGameOver) {
         AlertDialog(
-            onDismissRequest = { /* Nada */ },
+            onDismissRequest = { },
             title = { Text(text = "¡Fin del juego!") },
             text = { Text(text = "Lo siento, no has adivinado la palabra. El juego ha terminado.") },
             confirmButton = {
                 Button(onClick = {
-                    viewModel.resetGame() // Reiniciar el juego
+                    viewModel.resetGame()
                 }) {
                     Text("Reiniciar Juego")
                 }
@@ -68,7 +68,7 @@ fun GameScreen(viewModel: GameViewModel) {
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Mostrar todas las filas desde el principio
+
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -76,7 +76,6 @@ fun GameScreen(viewModel: GameViewModel) {
             for (index in 0 until maxGuesses) {
                 when {
                     index < guesses.size -> {
-                        // Mostrar las palabras ya adivinadas
                         WordRow(
                             guess = guesses[index],
                             wordToGuess = wordToGuess,
@@ -84,21 +83,21 @@ fun GameScreen(viewModel: GameViewModel) {
                             viewModel = viewModel
                         )
                     }
+
                     index == guesses.size -> {
-                        // Mostrar la palabra actual que se está escribiendo
                         WordRow(
-                            guess = currentGuess.padEnd(wordLength), // Rellenar la fila actual con espacios si es necesario
+                            guess = currentGuess.padEnd(wordLength),
                             wordToGuess = wordToGuess,
                             showColors = isGuessSubmitted,
                             viewModel = viewModel
                         )
                     }
+
                     else -> {
-                        // Mostrar filas vacías para los intentos futuros
                         WordRow(
-                            guess = "".padEnd(wordLength), // Rellenar con espacios vacíos
+                            guess = "".padEnd(wordLength),
                             wordToGuess = wordToGuess,
-                            showColors = false, // No mostrar colores
+                            showColors = false,
                             viewModel = viewModel
                         )
                     }
